@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         start_button = findViewById(R.id.start_button);
         final Handler handler = new Handler();
 
-        Thread thread = new Thread(new Runnable(){
+        Thread thread = new Thread( new Runnable(){
             @Override
             public void run() {
                 for(int i=0; i<=100; i++){
