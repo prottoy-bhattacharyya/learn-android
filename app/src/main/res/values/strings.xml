@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Prottoy The Great</string>
+    <string name="hello">Hello Sir</string>
+    <string name="bye">Bye Sir</string>
+    <string name="start">Start</string>
+    <string name="starting_progress">0%</string>
+
+</resources>
