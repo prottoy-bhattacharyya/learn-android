@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
@@ -19,13 +20,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-    boolean first = true;
+    boolean first = true, is_clicked = false;
     private CheckBox check_hello;
     private CheckBox check_hi;
     private RadioGroup radio_group;
     private TextView radio_select_text, checkbox_select_text, loop_progress_text;
     private ProgressBar loop_progress_bar;
     private Button start_button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,17 +46,38 @@ public class MainActivity extends AppCompatActivity {
         loop_progress_bar = findViewById(R.id.loop_progress_bar);
         loop_progress_text = findViewById(R.id.loop_progress_text);
         start_button = findViewById(R.id.start_button);
+        final Handler handler = new Handler();
+
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                for(int i=0; i<=100; i++){
+                    final int progress = i;
+                    handler.post(new Runnable(){
+                        @Override
+                        public void run() {
+                            loop_progress_bar.setProgress(progress);
+                            loop_progress_text.setText(progress + "%");
+                        }
+                    });
+                    SystemClock.sleep(100);
+                }
+                is_clicked = false;
+            }
+        });
 
         start_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(is_clicked) {
+                    return;
+                }
+                is_clicked = true;
+
                 loop_progress_bar.setProgress(0);
                 loop_progress_text.setText("0%");
-                for(int i=0; i<100; i++){
-                    loop_progress_bar.setProgress(i);
-                    loop_progress_text.setText(i+"%");
-//                    SystemClock.sleep(100);
-                }
+                thread.start();
             }
         });
 
